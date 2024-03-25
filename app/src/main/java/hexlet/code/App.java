@@ -22,7 +22,7 @@ class App implements Callable<Integer> {
     public Integer call() throws Exception {
         try {
             System.out.println(Differ.generate(filepath1, filepath2));
-        } catch (Exception exeption) {
+        } catch (Exception exception) {
             System.out.println("Ошибка!");
             return 1;
         }

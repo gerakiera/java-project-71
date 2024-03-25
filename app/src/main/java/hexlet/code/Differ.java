@@ -1,34 +1,54 @@
 package hexlet.code;
 
+import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
 
 public class Differ {
+    static private final String UNCHANGED = "unchaged";
+    static private final String ADDED = "added";
+    static private final String DELETED = "deleted";
     public static String generate(String filepath1, String filepath2) throws Exception {
         Map<String, Object> file1 = getData(filepath1);
         Map<String, Object> file2 = getData(filepath2);
-        StringBuilder resultFile = new StringBuilder("{\n");
-        for (Map.Entry<String, Object> entry : file1.entrySet()) {
-            for (Map.Entry<String, Object> entry2 : file2.entrySet()) {
-                if (entry.getKey().equals(entry2.getKey()) && entry.getValue().equals(entry2.getValue())) {
-                    resultFile.append("  ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        TreeMap<String,String> resultFile= new TreeMap<>();
+        for (var key : file1.keySet()) {
+            Object value1 = file1.get(key);
+            Object value2 = file2.get(key);
+                if (file2.containsKey(key) && value1.equals(value2)) {
+                    resultFile.put(key + ": " + value1 + "\n", UNCHANGED);
                 }
-                if (entry.getKey().equals(entry2.getKey()) && !entry.getValue().equals(entry2.getValue())) {
-                    resultFile.append("- ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-                    resultFile.append("+ ").append(entry2.getKey()).append(": ").append(entry2.getValue()).append("\n");
+                if (file2.containsKey(key) && !value1.equals(value2)) {
+                    resultFile.put(key + ": " + value1 + "\n", DELETED);
+                    resultFile.put(key + ": " + value2 + "\n", ADDED);
                 }
-                if(!file1.containsKey(entry2.getKey())) {
-                    resultFile.append("+ ").append(entry2.getKey()).append(": ").append(entry2.getValue()).append("\n");
-                }
-                if(!file2.containsKey(entry.getKey())) {
-                    resultFile.append("- ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-                }
+                if(!file2.containsKey(key)) {
+                    resultFile.put(key + ": " + value1 + "\n", DELETED);
             }
         }
-        resultFile.append("}");
-        return resultFile.toString();
+        for (var key : file2.keySet()) {
+            if(!file1.containsKey(key)) {
+                resultFile.put(key + ": " + file2.get(key) + "\n", ADDED);
+            }
+        }
+        return format(resultFile);
+    }
+    public static String format(TreeMap<String, String> resultFile) {
+        StringBuilder result = new StringBuilder("{\n");
+        for (Map.Entry<String, String> entry : resultFile.entrySet()) {
+            switch (entry.getValue()) {
+                case UNCHANGED -> result.append(" " + " ").append(entry.getKey());
+                case ADDED -> result.append("+" + " ").append(entry.getKey());
+                case DELETED -> result.append("-" + " ").append(entry.getKey());
+            }
+        }
+        result.append("}");
+        return result.toString();
     }
     public static Map<String, Object> getData(String filePath) throws Exception {
         Path path = Paths.get(filePath).toAbsolutePath().normalize();
