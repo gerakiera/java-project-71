@@ -1,54 +1,52 @@
 package hexlet.code;
 
-import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.Set;
+import java.util.TreeSet;
 
+
+import static hexlet.code.Formatter.chooseFormat;
 public class Differ {
-    static private final String UNCHANGED = "unchaged";
-    static private final String ADDED = "added";
-    static private final String DELETED = "deleted";
     public static String generate(String filepath1, String filepath2) throws Exception {
+        return generate(filepath1, filepath2, "stylish");
+    }
+    public static String generate(String filepath1, String filepath2, String format) throws Exception {
         Map<String, Object> file1 = getData(filepath1);
         Map<String, Object> file2 = getData(filepath2);
-        TreeMap<String,String> resultFile= new TreeMap<>();
-        for (var key : file1.keySet()) {
-            Object value1 = file1.get(key);
-            Object value2 = file2.get(key);
-                if (file2.containsKey(key) && value1.equals(value2)) {
-                    resultFile.put(key + ": " + value1 + "\n", UNCHANGED);
-                }
-                if (file2.containsKey(key) && !value1.equals(value2)) {
-                    resultFile.put(key + ": " + value1 + "\n", DELETED);
-                    resultFile.put(key + ": " + value2 + "\n", ADDED);
-                }
-                if(!file2.containsKey(key)) {
-                    resultFile.put(key + ": " + value1 + "\n", DELETED);
-            }
-        }
-        for (var key : file2.keySet()) {
-            if(!file1.containsKey(key)) {
-                resultFile.put(key + ": " + file2.get(key) + "\n", ADDED);
-            }
-        }
-        return format(resultFile);
+        List<Map<String, Object>> diff = build(file1, file2);
+        return chooseFormat(diff, format);
     }
-    public static String format(TreeMap<String, String> resultFile) {
-        StringBuilder result = new StringBuilder("{\n");
-        for (Map.Entry<String, String> entry : resultFile.entrySet()) {
-            switch (entry.getValue()) {
-                case UNCHANGED -> result.append(" " + " ").append(entry.getKey());
-                case ADDED -> result.append("+" + " ").append(entry.getKey());
-                case DELETED -> result.append("-" + " ").append(entry.getKey());
+    public static List<Map<String, Object>> build(Map<String, Object> file1, Map<String, Object> file2) {
+        Set<String> keys = new TreeSet<>(file1.keySet());
+        keys.addAll(file2.keySet());
+        List<Map<String, Object>> result = new LinkedList<>();
+        for (var key :keys) {
+            Object value1 = file1.get(key) == null ? "null" : file1.get(key);
+            Object value2 = file2.get(key) == null ? "null" : file2.get(key);
+            if (file2.containsKey(key) && value1.equals(value2)) {
+                Map<String, Object> node = Map.of("type", "unchanged", "key", key, "newValue", value1);
+                result.add(node);
+            }
+            if (file2.containsKey(key) && !value1.equals(value2) && !value1.equals("null")) {
+                Map<String, Object> node = Map.of("type", "changed", "key", key, "oldValue",
+                        value1, "newValue", value2);
+                result.add(node);
+            }
+            if (!file2.containsKey(key)) {
+                Map<String, Object> node = Map.of("type", "deleted", "key", key, "newValue", value1);
+                result.add(node);
+            }
+            if (!file1.containsKey(key)) {
+                Map<String, Object> node = Map.of("type", "added", "key", key, "newValue", value2);
+                result.add(node);
             }
         }
-        result.append("}");
-        return result.toString();
+        return result;
     }
     public static Map<String, Object> getData(String filePath) throws Exception {
         Path path = Paths.get(filePath).toAbsolutePath().normalize();
