@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,7 +49,7 @@ public class Differ {
         }
         return result;
     }
-    public static Map<String, Object> getData(String filePath) throws Exception {
+    public static Map<String, Object> getData(String filePath) throws IOException {
         Path path = Paths.get(filePath).toAbsolutePath().normalize();
         String fileContent = Files.readString(path);
         String format = getFileFormat(filePath);
