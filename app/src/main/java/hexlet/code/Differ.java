@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 
 import static hexlet.code.Formatter.chooseFormat;
@@ -33,7 +29,7 @@ public class Differ {
                 Map<String, Object> node = Map.of("type", "unchanged", "key", key, "newValue", value1);
                 result.add(node);
             }
-            if (file2.containsKey(key) && !value1.equals(value2) && !value1.equals("null")) {
+            if (file2.containsKey(key) && !value1.equals(value2)) {
                 Map<String, Object> node = Map.of("type", "changed", "key", key, "oldValue",
                         value1, "newValue", value2);
                 result.add(node);
@@ -53,7 +49,14 @@ public class Differ {
         Path path = Paths.get(filePath).toAbsolutePath().normalize();
         String fileContent = Files.readString(path);
         String format = getFileFormat(filePath);
-        return Parser.parser(fileContent, format);
+        Map<String, Object> parsedData = new LinkedHashMap<>();
+        Map<String, Object> parsedMap = Parser.parser(fileContent, format);
+
+        for (Map.Entry<String, Object> entry : parsedMap.entrySet()) {
+            parsedData.put(entry.getKey(), entry.getValue());
+        }
+
+        return parsedData;
     }
     public static String getFileFormat(String path) {
         return path.substring(path.lastIndexOf('.') + 1).toLowerCase();
