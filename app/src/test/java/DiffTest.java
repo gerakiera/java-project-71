@@ -28,7 +28,7 @@ public class DiffTest {
     }
     @Test
     public void testYml() throws Exception {
-        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml");
+        String result = Differ.generate("src/test/resources/test1.yml", "src/test/resources/test1.yml");
         assertThat(result).isEqualToIgnoringWhitespace(resultStylish);
     }
     @Test
@@ -38,7 +38,7 @@ public class DiffTest {
     }
     @Test
     public void testYmlStylish() throws Exception {
-        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml", "stylish");
+        String result = Differ.generate("src/test/resources/test1.yml", "src/test/resources/test1.yml", "stylish");
         assertThat(result).isEqualToIgnoringWhitespace(resultStylish);
     }
     @Test
@@ -48,7 +48,7 @@ public class DiffTest {
     }
     @Test
     public void testYmlPlain() throws Exception {
-        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml", "plain");
+        String result = Differ.generate("src/test/resources/test1.yml", "src/test/resources/test1.yml", "plain");
         assertThat(result).isEqualToIgnoringWhitespace(resultPlain);
     }
     @Test
@@ -58,7 +58,7 @@ public class DiffTest {
     }
     @Test
     public void testYmlJson() throws Exception {
-        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml", "json");
+        String result = Differ.generate("src/test/resources/test1.yml", "src/test/resources/test1.yml", "json");
         assertThat(result).isEqualToIgnoringWhitespace(resultJson);
     }
     @Test
