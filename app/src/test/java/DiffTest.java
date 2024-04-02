@@ -1,5 +1,6 @@
 import hexlet.code.Differ;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -22,18 +23,47 @@ public class DiffTest {
     @BeforeAll
     public static void beforeAll() throws Exception {
         resultJson = fileToString("resultJson.json");
-        resultStylish = fileToString("resultStylish.json");
-        resultPlain = fileToString("resultPlain.json");
-
+        resultStylish = fileToString("resultStylish.txt");
+        resultPlain = fileToString("resultPlain.txt");
     }
-    @ParameterizedTest
-    @ValueSource(strings = {"json", "yml"})
-    public void testDiffer(String format) throws Exception {
-        String filePath1 = filePath("fileForTest1." + format).toString();
-        String filePath2 = filePath("fileForTest2." + format).toString();
-        assertThat(Differ.generate(filePath1, filePath2)).isEqualTo(resultStylish);
-        assertThat(Differ.generate(filePath1, filePath2, "stylish")).isEqualTo(resultStylish);
-        assertThat(Differ.generate(filePath1, filePath2, "plain")).isEqualTo(resultPlain);
-        assertThat(Differ.generate(filePath1, filePath2, "json")).isEqualTo(resultJson);
+    @Test
+    public void testYml() throws Exception {
+        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml");
+        assertThat(result).isEqualToIgnoringWhitespace(resultStylish);
+    }
+    @Test
+    public void testJson() throws Exception {
+        String result = Differ.generate("src/test/resources/fileForTest1.json", "src/test/resources/fileForTest1.json");
+        assertThat(result).isEqualToIgnoringWhitespace(resultStylish);
+    }
+    @Test
+    public void testYmlStylish() throws Exception {
+        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml", "stylish");
+        assertThat(result).isEqualToIgnoringWhitespace(resultStylish);
+    }
+    @Test
+    public void testJsonStylish() throws Exception {
+        String result = Differ.generate("src/test/resources/fileForTest1.json", "src/test/resources/fileForTest1.json", "stylish");
+        assertThat(result).isEqualToIgnoringWhitespace(resultStylish);
+    }
+    @Test
+    public void testYmlPlain() throws Exception {
+        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml", "plain");
+        assertThat(result).isEqualToIgnoringWhitespace(resultPlain);
+    }
+    @Test
+    public void testJsonPlain() throws Exception {
+        String result = Differ.generate("src/test/resources/fileForTest1.json", "src/test/resources/fileForTest1.json", "plain");
+        assertThat(result).isEqualToIgnoringWhitespace(resultPlain);
+    }
+    @Test
+    public void testYmlJson() throws Exception {
+        String result = Differ.generate("src/test/resources/test1.yaml", "src/test/resources/test1.yaml", "json");
+        assertThat(result).isEqualToIgnoringWhitespace(resultJson);
+    }
+    @Test
+    public void testJsonJson() throws Exception {
+        String result = Differ.generate("src/test/resources/fileForTest1.json", "src/test/resources/fileForTest1.json", "json");
+        assertThat(result).isEqualToIgnoringWhitespace(resultJson);
     }
 }
