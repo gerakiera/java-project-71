@@ -20,7 +20,7 @@ public class Plain {
                         .append(convertedValue(d.get("newValue"))).append("\n");
             }
         }
-        return result.toString();
+        return result.toString().trim();
     }
     public static String convertedValue(Object value) {
         if (value.equals("null")) {
