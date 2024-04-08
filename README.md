@@ -15,7 +15,7 @@
 ./build/install/app/bin/app -f plain filepath1.json filepath2.json
 ```
 ## Демонстрация проекта:
-## Сравнение плоских файлов (JSON и yaml)
+### Сравнение плоских файлов (JSON и yaml)
 [![asciicast](https://asciinema.org/a/4jI7d8qawCIb3YvwUrJGCIP4N.svg)](https://asciinema.org/a/4jI7d8qawCIb3YvwUrJGCIP4N)
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/gerakiera/java-project-71/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/gerakiera/java-project-71/actions)
