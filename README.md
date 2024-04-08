@@ -6,13 +6,13 @@
 - *plain*
 - *json*
 Вызов справочной информации:
-'''
+```
 ./build/install/app/bin/app -h
-'''
+```
 Пример команды для сравнения файлов:
-'''
+```
 ./build/install/app/bin/app -f plain filepath1.json filepath2.json
-'''
+```
 ## Демонстрация проекта:
 ## Сравнение плоских файлов (JSON и yaml)
 [![asciicast](https://asciinema.org/a/4jI7d8qawCIb3YvwUrJGCIP4N.svg)](https://asciinema.org/a/4jI7d8qawCIb3YvwUrJGCIP4N)
