@@ -22,11 +22,9 @@ public class Parser {
         Map<String, Object> result = new HashMap<>();
         if (format.equals("json")) {
             result = parsingJson(fileContent);
-        }
-        else if (format.equals("yml") || format.equals("yaml")) {
+        } else if (format.equals("yml") || format.equals("yaml")) {
             result = parsingYml(fileContent);
-        }
-        else {
+        } else {
             throw new RuntimeException("Неверный формат: " + format);
         }
         return result;
