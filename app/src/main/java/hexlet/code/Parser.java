@@ -23,8 +23,11 @@ public class Parser {
         if (format.equals("json")) {
             result = parsingJson(fileContent);
         }
-        if (format.equals("yml") || format.equals("yaml")) {
+        else if (format.equals("yml") || format.equals("yaml")) {
             result = parsingYml(fileContent);
+        }
+        else {
+            throw new RuntimeException("Неверный формат: " + format);
         }
         return result;
     }

@@ -14,12 +14,12 @@ public class Formatter {
         String result = null;
         if (format.equals("stylish")) {
             result = stylishFormat(diff);
-        }
-        if (format.equals("plain")) {
+        } else if (format.equals("plain")) {
             result = plainFormat(diff);
-        }
-        if (format.equals("json")) {
+        } else if (format.equals("json")) {
             result = jsonFormat(diff);
+        } else {
+            throw new RuntimeException("Неверный формат: " + format);
         }
         return result;
     }
