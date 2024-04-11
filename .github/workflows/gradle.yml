@@ -18,7 +18,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
 
     - name: Build with Gradle Wrapper
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/gradle-build-action@v3
       with:
         arguments: build
         build-root-directory: app
@@ -30,6 +30,6 @@ jobs:
         CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         JACOCO_SOURCE_PATH: app/src/main/java
       with:
-        workingDirectory: ./app
+        workingDirectory: app
         coverageCommand: make report
         coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
