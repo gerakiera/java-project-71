@@ -13,7 +13,8 @@ import java.util.Map;
 public class Parser {
     public static Map<String, Object> parsingJson(String fileContent) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        LinkedHashMap<String, Object> linkedMap = mapper.readValue(fileContent, new TypeReference<LinkedHashMap<String, Object>>() { });
+        LinkedHashMap<String, Object> linkedMap = mapper.readValue(fileContent,
+                new TypeReference<LinkedHashMap<String, Object>>() { });
 
         return new LinkedHashMap<>(linkedMap);
     }

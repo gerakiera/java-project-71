@@ -1,6 +1,12 @@
 package hexlet.code;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Objects;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class TreeBuilder {
     public static List<Map<String, Object>> build(Map<String, Object> file1, Map<String, Object> file2) {
@@ -10,7 +16,7 @@ public class TreeBuilder {
         for (var key :keys) {
             Object value1 = file1.get(key) == null ? "null" : file1.get(key);
             Object value2 = file2.get(key) == null ? "null" : file2.get(key);
-            if (Objects.equals(file1.get(key), (file2.get(key)))) {
+            if (Objects.equals(value1, value2)) {
                 Map<String, Object> node = new LinkedHashMap<>();
                 node.put("type", "unchanged");
                 node.put("key", key);
@@ -37,6 +43,7 @@ public class TreeBuilder {
                 result.add(node);
             }
         }
+
         return result;
     }
 }
