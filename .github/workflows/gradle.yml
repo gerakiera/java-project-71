@@ -18,15 +18,17 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
 
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
-      working-directory: ./app
+      uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+          build-root-directory: app
       
 
     - name: Code Coverage
       uses: paambaati/codeclimate-action@v5.0.0
       env:
         CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        JACOCO_SOURCE_PATH: "${{github.workspace}}/app/src/main/java"
+        JACOCO_SOURCE_PATH: app/src/main/java"
       with:
         workingDirectory: ./app
         coverageCommand: make report
