@@ -7,12 +7,15 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Parser {
     public static Map<String, Object> parsingJson(String fileContent) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(fileContent, new TypeReference<Map<String, Object>>() { });
+        LinkedHashMap<String, Object> linkedMap = mapper.readValue(fileContent, new TypeReference<LinkedHashMap<String, Object>>() { });
+
+        return new LinkedHashMap<>(linkedMap);
     }
     public static Map<String, Object> parsingYml(String fileContent) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
