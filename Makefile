@@ -21,8 +21,8 @@ run:
 test:
 	./app/gradlew test
 
-report:
-	./app/gradlew jacocoTestReport
+report
+    	make -C app report
 
 lint:
 	./app/gradlew checkstyleMain
