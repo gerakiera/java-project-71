@@ -21,7 +21,7 @@ run:
 test:
 	./app/gradlew test
 
-report
+report:
 	make -C app report
 
 lint:
